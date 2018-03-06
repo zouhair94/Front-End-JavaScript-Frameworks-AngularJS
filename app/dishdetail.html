@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="confusionApp">
+<head>
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<meta charset="UTF-8">
+	<link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-social.css" rel="stylesheet">
+    <link href="styles/mystyles.css" rel="stylesheet">
+     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn\'t work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <!--[endif]-->
+	<title>Document</title>
+</head>
+<body>
+	<div class="container">	
+		<div class="row" ng-controller="DishDetailController as dCtrl">
+			<div class="col-xs-12 media"  >
+				<div class="media-left">
+					<img alt="" class="img-thumbnail media-object" ng-src="{{ dish.image }}">
+				</div>
+				<div class="media-body">
+					
+                    <div class="media-body">
+                        <h2 class="media-heading">
+                            {{dish.name}}
+                             <span class="label label-danger label-xs" ng-show="dish.label"> {{dish.label}} </span>
+                             <span class="badge" > {{ dish.price | currency }} </span>                            
+                        </h2>
+                        <p> 
+                             {{dish.description}}
+                        </p>
+                        
+                    </div>
+                    
+				</div>
+			</div>
+			<div class="pull-right">
+			<label>order by : </label>	<input type="text" ng-model="order" >
+			</div>
+			<div class="col-sm-8 col-sm-offset-2" ng-repeat="c in dish.comments | orderBy : order">	
+						<blockquote>
+							<p>{{ c.rating }}Stars	</p>
+							<p> {{ c.comment }}</p>
+							<footer>
+								{{c.author}} - {{c.date | date : mediumDate }}
+							</footer>
+						</blockqoute>	           
+            </div>
+            <div class="col-sm-8 col-sm-offset-2" ng-show=" !commentForm.author.$error.required && !commentForm.comment.$error.required ">
+            	<blockquote  >
+							<p> {{ comments.rating }} Stars	</p>
+							<p> {{ comments.comment }}</p>
+							<footer>
+								{{comments.author}} - {{ time | date : mediumDate }}
+							</footer>
+				</blockqoute>		
+            </div>
+            <div class="col-xs-12">
+            	<form class="form-horizontal" role="form" ng-submit="addComment()" name="commentForm" novalidate>
+	            	<div class="form-group" ng-class=" { 'has-error': commentForm.author.$error.required && !commentForm.author.$pristine }">
+	            		<label for="" class="col-sm-2 control-label">
+	            			your name :
+	            		</label>
+	            		<div class="col-sm-10">
+	            			<input type="text" class="form-control " name="author" id="author" ng-model="comments.author" required>
+	            			<span ng-show="commentForm.author.$error.required && !commentForm.author.$pristine" class="help-block"> name required !!</span>
+	            		</div>
+
+	            	</div>
+	            	<div class="form-group">
+	            		<label for="" class="col-sm-2 control-label">
+	            			number of stars :
+	            		</label>
+	            		<div class="col-sm-10" >
+							<label ng-repeat=" r in radioData ">
+	            			<input type="radio" ng-value="r.value "  name="rating" id="rating" ng-model="comments.rating" >
+	            			   {{  r.value  }} &nbsp;  
+	            			</label>
+	            		</div>
+
+	            	</div>
+	            	<div class="form-group" ng-class="{'has-error' : commentForm.comment.$error.required && !commentForm.comment.$pristine }">
+	            		<label for="" class="col-sm-2 control-label">
+	            			your comment:
+	            		</label>
+	            		<div class="col-sm-10">
+	            			<textarea class="form-control" rows="12" name="comment" ng-model="comments.comment" required>
+	            				
+	            			</textarea>
+	            			<span ng-show="commentForm.comment.$error.required && !commentForm.comment.$pristine" class="help-block"> comment required !!</span>
+	            		</div>
+	            	</div>
+	            	<div class="form-group">
+	            		<div class="col-sm-10 col-sm-offset-2">	
+	            			<button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">add new comment</button>
+	            		</div>
+	            	</div>	
+                </form>
+            </div>        
+		</div>
+	</div>
+
+
+
+
+    <!-- build:js scripts/main.js -->
+		<script src="../bower_components/angular/angular.min.js"></script>
+		<script src="scripts/app.js"></script>
+    <!-- endbuild -->	
+</body>
+</html>
