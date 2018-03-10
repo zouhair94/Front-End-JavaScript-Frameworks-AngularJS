@@ -73,10 +73,10 @@
 
 }])
 
- .controller('DishDetailController', ['$scope','MenuService', function($scope,MenuService) {
+ .controller('DishDetailController', ['$scope','MenuService','$stateParams', function($scope,MenuService,$stateParams) {
 
             var drating = 5;
-            $scope.dish = MenuService.getDish(3);            
+            $scope.dish = MenuService.getDish($stateParams.id);            
             $scope.radioData = [
               { label:'1', value:1 },
               { label:'2', value:2 },
@@ -124,5 +124,14 @@
     $scope.timeNow = new  Date().toUTCString() ;
   },1000);
 }])
+.controller('indexController',['$scope','corporateFactory','MenuService','menuFactory',function($scope,corporateFactory,MenuService,menuFactory){
+  $scope.leader = corporateFactory.getLeader(2);
+  $scope.promo= menuFactory.getPromotion(0);
+  $scope.dish = MenuService.getDish(3);
 
+
+}])
+.controller('aboutController',['$scope','corporateFactory',function($scope,corporateFactory){
+      $scope.leaders = corporateFactory.getLeaders();
+}])
      ;

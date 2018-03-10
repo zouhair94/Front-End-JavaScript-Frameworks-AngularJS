@@ -2,6 +2,12 @@
 	<div class="container">	
 		<div class="row" ng-controller="DishDetailController as dCtrl">
 			<div class="col-xs-12 media"  >
+					<div class="col-xs-12">
+							<button class="btn btn-xs btn-primary pull-right"
+								type="button" ui-sref="app.menu">
+								Back to Menu
+							</button>
+							<div class="media">
 				<div class="media-left">
 					<img alt="" class="img-thumbnail media-object" ng-src="{{ dish.image }}">
 				</div>

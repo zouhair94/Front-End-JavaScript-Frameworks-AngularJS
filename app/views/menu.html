@@ -37,9 +37,8 @@
                 <ul class="media-list tab-pane fade in active" >    
                 <li class="media" ng-repeat="dish in dishes | filter: fillText">
                     <div class="media-left media-middle">
-                        <a href="">
+                        <a ui-sref="app.dishDetail({id:dish._id})" >
                             <img class="media-object img-thumbnail" ng-src={{dish.image}} alt="{{dish.name}}">
-
                         </a>
                     </div>
                     <div class="media-body">
