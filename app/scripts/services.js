@@ -191,7 +191,7 @@ angular.module('confusionApp')
             }];
         menufac.getPromotion = function(index){
             return promotions[index]
-        }
+        };
         return menufac;
 
     })
