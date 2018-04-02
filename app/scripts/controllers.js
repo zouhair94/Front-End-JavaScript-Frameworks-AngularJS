@@ -1,10 +1,31 @@
    'use strict';
     angular.module('confusionApp')
      .controller('MenuController',['$scope','MenuService',function($scope,MenuService){
+         $scope.showMenu = false ;
+         $scope.message = "loading .. ";
         $scope.tab =1 ;
         $scope.fillText = "";
         $scope.showDetails = false ; 
-        $scope.dishes = MenuService.getDishes();
+        $scope.dishes = MenuService.getDishes().query(
+            function(response) {
+                $scope.dishes = response;
+                $scope.showMenu = true;
+            },
+            function(response) {
+                $scope.message = "Error: "+response.status + " " + response.statusText;
+            }
+        );
+       /* $scope.dishes = {};
+        MenuService.getDishes()
+          .then(function(response){
+              $scope.dishes = response.data ;
+              $scope.showMenu = true ; 
+          },
+        function(response){
+            $scope.message = "error : "+response.status+" "+respons.statusText;
+
+        })
+        ;*/
         
         $scope.select = function(setTab){
             $scope.tab = setTab ;
@@ -76,7 +97,25 @@
  .controller('DishDetailController', ['$scope','MenuService','$stateParams', function($scope,MenuService,$stateParams) {
 
             var drating = 5;
-            $scope.dish = MenuService.getDish($stateParams.id);            
+            $scope.showDish = false ; 
+            $scope.message = "loading ...! ";
+            $scope.dish =  {};
+            MenuService.getDishes().get({id:parseInt($stateParams.id,10)}).$promise.then(
+                function(response){
+                    $scope.dish = response;
+                    $scope.showDish = true;
+                },
+                function(response) {
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                }
+            );
+           /* .then(function(response){
+                $scope.dish = response.data ; 
+                $scope.showDish = true ;
+            },function(response){
+                $scope.message = "error : "+response.status+" "+response.statusText;
+            })
+            ;  */          
             $scope.radioData = [
               { label:'1', value:1 },
               { label:'2', value:2 },
@@ -87,7 +126,7 @@
             $scope.comments = {rating:5,comment:"",author:""};
             $scope.addComment =  function(){
              
-              if($scope.commentForm.$valid)
+              if(this.commentForm.$valid)
               {
                 $scope.dish.comments.push({
                   rating : $scope.comments.rating ,
@@ -95,12 +134,15 @@
                   author : $scope.comments.author ,
                   date: $scope.time , 
                 });
+                MenuService.getDishes().update({id:parseInt($stateParams.id,10)},$scope.dish);
               }
               $scope.comments.rating = 5 ;
               $scope.comments.comment = "";
               $scope.comments.author="";
-              $scope.commentForm.$setPristine();
+              console.log($scope.commentForm);
+              this.commentForm.$setPristine();
               console.log($scope.comments);
+              
               console.log($scope.dish);
               console.log($scope.time);
               console.log($scope.dish.comments[5].date);
@@ -114,6 +156,7 @@
               }
             } ;
             $scope.time =  Date.now();
+                   
             console.log($scope.dish);
             
         }])
@@ -125,10 +168,31 @@
   },1000);
 }])
 .controller('indexController',['$scope','corporateFactory','MenuService','menuFactory',function($scope,corporateFactory,MenuService,menuFactory){
-  $scope.leader = corporateFactory.getLeader(2);
+    $scope.showDish = false;
+    $scope.message="Loading ...";
+    $scope.leader = corporateFactory.getLeader(2);
   $scope.promo= menuFactory.getPromotion(0);
-  $scope.dish = MenuService.getDish(3);
+  $scope.dish = MenuService.getDishes().get({id:0}).$promise.then(
+    function(response){
+        $scope.dish = response;
+        $scope.showDish = true;
+    },
+    function(response) {
+        $scope.message = "Error: "+response.status + " " + response.statusText;
+    }
+);
+ /* $scope.dish =  {};
+            MenuService.getDish(2)
+            .then(function(response){
+                $scope.dish = response.data ; 
+                $scope.showDish = true ; 
 
+            },
+            function(response){
+                $scope.message = "error : "+response.status+" "+response.statusText;
+            }
+        );
+*/
 
 }])
 .controller('aboutController',['$scope','corporateFactory',function($scope,corporateFactory){
