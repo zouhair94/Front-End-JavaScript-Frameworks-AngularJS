@@ -73,7 +73,7 @@
 }])
 
 
-.controller('FeedbackController',['$scope',function($scope){
+.controller('FeedbackController',['$scope','feedbackFactory',function($scope,feedbackFactory){
   $scope.sendFeedback = function(){
       console.log($scope.feedback);
       if ($scope.feedback.agree && ($scope.feedback.mychannel == "")&& !$scope.feedback.mychannel) {
@@ -83,6 +83,7 @@
                 }
                 else {
                     $scope.invalidChannelSelection = false;
+                    feedbackFactory.getFeedback().save($scope.feedback);
                     $scope.feedback = {mychannel:"", firstName:"", lastName:"",
                                        agree:false, email:"" };
                     $scope.feedback.mychannel="";
@@ -169,9 +170,29 @@
 }])
 .controller('indexController',['$scope','corporateFactory','MenuService','menuFactory',function($scope,corporateFactory,MenuService,menuFactory){
     $scope.showDish = false;
+    $scope.showPromo =false ;
+    $scope.pmessage = "loading ._.-." ;
     $scope.message="Loading ...";
-    $scope.leader = corporateFactory.getLeader(2);
-  $scope.promo= menuFactory.getPromotion(0);
+    $scope.lmessage ="loading";
+    $scope.showLead = false;
+      $scope.leaders = corporateFactory.getLeaders().get({id:2}).$promise.then(
+          function(response){
+              $scope.showLead = true;
+              $scope.leader = response ;
+          },
+          function(response){
+              $scope.lmessage = "Error : " + response.statusText ;
+          }
+      );
+  $scope.promo= menuFactory.getPromotion().get({id:0}).$promise.then(
+      function(response){
+          $scope.promo = response ;
+          $scope.showPromo = true ; 
+      },
+      function(response){
+          $scope.pmessage = "Error : "+response.status+" "+response.statusText ; 
+      }
+  ) ;
   $scope.dish = MenuService.getDishes().get({id:0}).$promise.then(
     function(response){
         $scope.dish = response;
@@ -196,6 +217,16 @@
 
 }])
 .controller('aboutController',['$scope','corporateFactory',function($scope,corporateFactory){
-      $scope.leaders = corporateFactory.getLeaders();
+    $scope.message ="loading";
+    $scope.showLead = false
+      $scope.leaders = corporateFactory.getLeaders().query(
+          function(response){
+              $scope.showLead = true;
+              $scope.leader = response ;
+          },
+          function(response){
+              $scope.message = "Error : " + response.statusText ;
+          }
+      );
 }])
      ;

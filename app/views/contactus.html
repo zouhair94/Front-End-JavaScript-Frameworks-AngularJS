@@ -68,9 +68,9 @@
                             </label>
                         </div>
                         <div class="col-sm-3 col-sm-offset-1">
-                            <select class="form-control">
-                                <option>Tel.</option>
-                                <option>Email</option>
+                            <select class="form-control" ng-model="feedback.mychannel">
+                                <option value="tel">Tel.</option>
+                                <option value="email">Email</option>
                             </select>
                         </div>
                         <span ng-show="invalidChannelSelection" class="help-block">Select an option.</span>

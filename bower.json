@@ -1,32 +1,28 @@
 {
-  "name": "confusion",
-  "authors": [
-    "zouhair ridaoui <31044169+zouhair94@users.noreply.github.com>"
-  ],
-  "description": "app angular",
-  "main": "app",
-  "keywords": [
-    "angular",
-    "javascript",
-    "grunt",
-    "bootstrap",
-    "glup"
-  ],
-  "license": "MIT",
-  "homepage": "index.html",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "name": "con-fusion",
+  "version": "0.0.0",
   "dependencies": {
-    "bootstrap": "~3.3.5",
-    "font-awesome": "~4.4.0",
-    "angular": "^1.6.9",
-    "angular-route": "^1.6.9",
-    "angular-ui-router": "^1.0.15",
-    "angular-resource": "^1.6.9"
+    "angular": "^1.4.0",
+    "bootstrap": "^3.2.0",
+    "angular-animate": "^1.4.0",
+    "angular-cookies": "^1.4.0",
+    "angular-resource": "^1.4.0",
+    "angular-route": "^1.4.0",
+    "angular-sanitize": "^1.4.0",
+    "angular-touch": "^1.4.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.4.0"
+  },
+  "appPath": "app",
+  "moduleName": "conFusionApp",
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "less/bootstrap.less",
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
+      ]
+    }
   }
 }
